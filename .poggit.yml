@@ -1,0 +1,16 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/OutiServer/PMMPTeleporter
+build-by-default: true
+branches:
+- main
+projects:
+  PMMPTeleporter:
+    path: ""
+    lint:
+      phpstan: false
+    libs:
+      - src: poggit/libasynql/libasynql
+        version: ^4.1.0
+      - src: CortexPE/Commando/Commando
+        version: ^3.0.0
+        branch: PM4
+...
