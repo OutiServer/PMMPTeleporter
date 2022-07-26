@@ -1,0 +1,23 @@
+name: Teleporter
+description: テレポートプラグイン
+version: 1.0.0
+api: 4.0.0
+main: outiserver\teleporter\Teleporter
+src-namespace-prefix: outiserver\teleporter
+
+loadbefore:
+  - EconomyCore
+
+permissions:
+  teleporter.command:
+    description: Teleporter Command Permission
+    default: true
+  teleporter.add.command:
+    description: Add SubCommand Permission
+    default: op
+  teleporter.remove.command:
+    description: Remove SubCommand Permission
+    default: op
+  teleporter.teleport.command:
+    description: Teleport SubCommand Permission
+    default: true

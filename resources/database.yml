@@ -1,0 +1,5 @@
+database:
+  type: sqlite
+  sqlite:
+    file: teleporter.sqlite
+  worker-limit: 1
