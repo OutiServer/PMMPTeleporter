@@ -33,7 +33,7 @@ class TeleporterDataManager extends BaseDataManager
                     if (Teleporter::getInstance()->getDatabaseConfig()["type"] === "sqlite" or Teleporter::getInstance()->getDatabaseConfig()["type"] === "sqlite3" or Teleporter::getInstance()->getDatabaseConfig()["type"] === "sq3") {
                         $this->seq = $data["seq"];
                     } elseif (Teleporter::getInstance()->getDatabaseConfig()["type"] === "mysql" or Teleporter::getInstance()->getDatabaseConfig()["type"] === "mysqli") {
-                        $this->seq = $data["Auto_increment"];
+                        $this->seq = $data["Auto_increment"] ?? 0;
                     }
                 }
             },
