@@ -21,12 +21,12 @@ class TeleporterForm implements BaseForm
     public function execute(Player $player): void
     {
         $contents = [
-            new SimpleFormButton(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.select_teleporter.button1"))
+            new SimpleFormButton(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.teleporter.button1"))
         ];
 
         if (Server::getInstance()->isOp($player->getName())) {
-            $contents[] = new SimpleFormButton(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.select_teleporter.button2"));
-            $contents[] = new SimpleFormButton(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.select_teleporter.button3"));
+            $contents[] = new SimpleFormButton(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.teleporter.button2"));
+            $contents[] = new SimpleFormButton(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.teleporter.button3"));
         }
         $form = new SimpleForm(Teleporter::getInstance(),
         $player,
