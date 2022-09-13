@@ -24,23 +24,23 @@ class AddTeleporterForm implements BaseForm
         $form = new CustomForm(Teleporter::getInstance(),
             $player,
             LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.add_teleporter.title"),
-        [
-            new ContentLabel(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.add_teleporter.label", [$pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ()])),
-            new ContentInput(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.add_teleporter.input"))
-        ],
-        function (Player $player, array $data) {
-            $pos = $player->getPosition();
-            TeleporterDataManager::getInstance()->create($pos->getWorld()->getFolderName(),
-                $data[1],
-                $pos->getFloorX(),
-                $pos->getFloorY(),
-                $pos->getFloorZ());
+            [
+                new ContentLabel(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.add_teleporter.label", [$pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ()])),
+                new ContentInput(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.add_teleporter.input"))
+            ],
+            function (Player $player, array $data) {
+                $pos = $player->getPosition();
+                TeleporterDataManager::getInstance()->create($pos->getWorld()->getFolderName(),
+                    $data[1],
+                    $pos->getFloorX(),
+                    $pos->getFloorY(),
+                    $pos->getFloorZ());
 
-            $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.add_teleporter.success", [$data[1]]));
-            $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.back"));
-            Teleporter::getInstance()->getStackFormManager()->deleteStackForm($player->getXuid(), self::FORM_KEY);
-            FormUtil::backForm(Teleporter::getInstance(), [$this, "execute"], [$player], 3);
-        },
+                $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.add_teleporter.success", [$data[1]]));
+                $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.back"));
+                Teleporter::getInstance()->getStackFormManager()->deleteStackForm($player->getXuid(), self::FORM_KEY);
+                FormUtil::backForm(Teleporter::getInstance(), [$this, "execute"], [$player], 3);
+            },
             function (Player $player) {
                 Teleporter::getInstance()->getStackFormManager()->deleteStackForm($player->getXuid(), self::FORM_KEY);
                 Teleporter::getInstance()->getStackFormManager()->getStackFormEnd($player->getXuid())->reSend();

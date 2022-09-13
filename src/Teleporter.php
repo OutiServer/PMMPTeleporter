@@ -71,8 +71,8 @@ class Teleporter extends PluginBase
             "mysql" => "sql/mysql.sql",
         ]);
         $this->dataConnector->executeGeneric("economy.teleporter.teleporters.init",
-        [],
-        null,
+            [],
+            null,
             function (SqlError $error) {
                 $this->getLogger()->error("[SqlError] {$error->getErrorMessage()}");
             });
@@ -86,9 +86,9 @@ class Teleporter extends PluginBase
         $this->stackFormManager = new StackFormManager();
 
         $this->getServer()->getCommandMap()->registerAll($this->getName(),
-        [
-            new TeleporterCommand($this, "teleporter", "テレポーターコマンド", "/teleporter", [])
-        ]);
+            [
+                new TeleporterCommand($this, "teleporter", "テレポーターコマンド", "/teleporter", [])
+            ]);
     }
 
     /**

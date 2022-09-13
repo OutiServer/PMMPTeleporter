@@ -68,12 +68,12 @@ class TeleporterDataManager extends BaseDataManager
                 "y" => $y,
                 "z" => $z
             ],
-        null,
+            null,
             function (SqlError $error) {
                 Teleporter::getInstance()->getLogger()->error("[SqlError] {$error->getErrorMessage()}");
             });
 
-        return ($this->data[++$this->seq] = new TeleporterData($this->dataConnector, $this->seq, $worldName, $name, $x, $y ,$z));
+        return ($this->data[++$this->seq] = new TeleporterData($this->dataConnector, $this->seq, $worldName, $name, $x, $y, $z));
     }
 
     public function delete(int $id): void
@@ -85,7 +85,7 @@ class TeleporterDataManager extends BaseDataManager
             [
                 "id" => $id
             ],
-        null,
+            null,
             function (SqlError $error) {
                 Teleporter::getInstance()->getLogger()->error("[SqlError] {$error->getErrorMessage()}");
             });

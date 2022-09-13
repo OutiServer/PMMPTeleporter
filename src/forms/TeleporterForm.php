@@ -29,21 +29,19 @@ class TeleporterForm implements BaseForm
             $contents[] = new SimpleFormButton(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.teleporter.button3"));
         }
         $form = new SimpleForm(Teleporter::getInstance(),
-        $player,
+            $player,
             LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.teleporter.title"),
             "",
-        $contents,
-        function (Player $player, int $data) {
-            if ($data === 0) {
-                (new SelectTeleporterForm())->execute($player);
-            }
-            elseif ($data === 1) {
-                (new AddTeleporterForm())->execute($player);
-            }
-            elseif ($data === 2) {
-                (new RemoveTeleporterForm())->execute($player);
-            }
-        },
+            $contents,
+            function (Player $player, int $data) {
+                if ($data === 0) {
+                    (new SelectTeleporterForm())->execute($player);
+                } elseif ($data === 1) {
+                    (new AddTeleporterForm())->execute($player);
+                } elseif ($data === 2) {
+                    (new RemoveTeleporterForm())->execute($player);
+                }
+            },
             function (Player $player): void {
                 Teleporter::getInstance()->getStackFormManager()->deleteStack($player->getXuid());
             });

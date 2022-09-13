@@ -31,23 +31,23 @@ class RemoveTeleporterForm implements BaseForm
         }, $teleporters);
 
         $form = new SimpleForm(Teleporter::getInstance(),
-        $player,
+            $player,
             LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.remove_teleporter.title"),
             LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.remove_teleporter.content"),
-        $teleporterButtons,
-        function (Player $player, int $data) use ($teleporters) {
-            $teleporter = $teleporters[$data];
-            TeleporterDataManager::getInstance()->delete($teleporter->getId());
-            $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.remove_teleporter.success", [$teleporter->getName()]));
+            $teleporterButtons,
+            function (Player $player, int $data) use ($teleporters) {
+                $teleporter = $teleporters[$data];
+                TeleporterDataManager::getInstance()->delete($teleporter->getId());
+                $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.remove_teleporter.success", [$teleporter->getName()]));
 
-            $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.back"));
-            Teleporter::getInstance()->getStackFormManager()->deleteStackForm($player->getXuid(), self::FORM_KEY);
-            FormUtil::backForm(Teleporter::getInstance(), [$this, "execute"], [$player], 3);
-        },
-        function (Player $player) {
-            Teleporter::getInstance()->getStackFormManager()->deleteStackForm($player->getXuid(), self::FORM_KEY);
-            Teleporter::getInstance()->getStackFormManager()->getStackFormEnd($player->getXuid())->reSend();
-        });
+                $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.back"));
+                Teleporter::getInstance()->getStackFormManager()->deleteStackForm($player->getXuid(), self::FORM_KEY);
+                FormUtil::backForm(Teleporter::getInstance(), [$this, "execute"], [$player], 3);
+            },
+            function (Player $player) {
+                Teleporter::getInstance()->getStackFormManager()->deleteStackForm($player->getXuid(), self::FORM_KEY);
+                Teleporter::getInstance()->getStackFormManager()->getStackFormEnd($player->getXuid())->reSend();
+            });
 
         Teleporter::getInstance()->getStackFormManager()->addStackForm($player->getXuid(), self::FORM_KEY, $form);
     }
