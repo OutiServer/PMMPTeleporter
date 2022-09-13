@@ -6,12 +6,12 @@
 -- # { init
 CREATE TABLE IF NOT EXISTS teleporters
 (
-    id                    INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL ,
-    world_name TEXT NOT NULL ,
-    x INTEGER NOT NULL ,
-    y INTEGER NOT NULL ,
-    z INTEGER NOT NULL
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    name       TEXT    NOT NULL,
+    world_name TEXT    NOT NULL,
+    x          INTEGER NOT NULL,
+    y          INTEGER NOT NULL,
+    z          INTEGER NOT NULL
 );
 -- # }
 
