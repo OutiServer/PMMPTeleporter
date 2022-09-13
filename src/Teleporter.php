@@ -76,4 +76,12 @@ class Teleporter extends PluginBase
     {
         return $this->stackFormManager;
     }
+
+    /**
+     * @return LanguageManager
+     */
+    public function getLanguageManager(): LanguageManager
+    {
+        return $this->languageManager;
+    }
 }
