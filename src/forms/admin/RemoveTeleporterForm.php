@@ -40,6 +40,7 @@ class RemoveTeleporterForm implements BaseForm
             TeleporterDataManager::getInstance()->delete($teleporter->getId());
             $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.remove_teleporter.success", [$teleporter->getName()]));
 
+            $player->sendMessage(LanguageManager::getInstance()->getLanguage($player->getLocale())->translateString("form.back"));
             Teleporter::getInstance()->getStackFormManager()->deleteStackForm($player->getXuid(), self::FORM_KEY);
             FormUtil::backForm(Teleporter::getInstance(), [$this, "execute"], [$player], 3);
         },
