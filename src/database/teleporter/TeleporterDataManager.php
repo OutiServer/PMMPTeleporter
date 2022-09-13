@@ -6,8 +6,10 @@ namespace outiserver\teleporter\database\teleporter;
 
 use outiserver\economycore\Database\Base\BaseAutoincrement;
 use outiserver\economycore\Database\Base\BaseDataManager;
+use outiserver\teleporter\Teleporter;
 use pocketmine\utils\SingletonTrait;
 use poggit\libasynql\DataConnector;
+use poggit\libasynql\SqlError;
 
 class TeleporterDataManager extends BaseDataManager
 {
@@ -28,8 +30,15 @@ class TeleporterDataManager extends BaseDataManager
                     return;
                 }
                 foreach ($row as $data) {
-                    $this->seq = $data["seq"];
+                    if (Teleporter::getInstance()->getDatabaseConfig()["type"] === "sqlite" or Teleporter::getInstance()->getDatabaseConfig()["type"] === "sqlite3" or Teleporter::getInstance()->getDatabaseConfig()["type"] === "sq3") {
+                        $this->seq = $data["seq"];
+                    } elseif (Teleporter::getInstance()->getDatabaseConfig()["type"] === "mysql" or Teleporter::getInstance()->getDatabaseConfig()["type"] === "mysqli") {
+                        $this->seq = $data["Auto_increment"];
+                    }
                 }
+            },
+            function (SqlError $error) {
+                Teleporter::getInstance()->getLogger()->error("[SqlError] {$error->getErrorMessage()}");
             });
         $this->dataConnector->executeSelect("economy.teleporter.teleporters.load",
             [],
@@ -37,6 +46,9 @@ class TeleporterDataManager extends BaseDataManager
                 foreach ($row as $data) {
                     $this->data[$data["id"]] = new TeleporterData($this->dataConnector, $data["id"], $data["world_name"], $data["name"], $data["x"], $data["y"], $data["z"]);
                 }
+            },
+            function (SqlError $error) {
+                Teleporter::getInstance()->getLogger()->error("[SqlError] {$error->getErrorMessage()}");
             });
     }
 
@@ -55,9 +67,13 @@ class TeleporterDataManager extends BaseDataManager
                 "x" => $x,
                 "y" => $y,
                 "z" => $z
-            ]);
+            ],
+            null,
+            function (SqlError $error) {
+                Teleporter::getInstance()->getLogger()->error("[SqlError] {$error->getErrorMessage()}");
+            });
 
-        return ($this->data[++$this->seq] = new TeleporterData($this->dataConnector, $this->seq, $worldName, $name, $x, $y ,$z));
+        return ($this->data[++$this->seq] = new TeleporterData($this->dataConnector, $this->seq, $worldName, $name, $x, $y, $z));
     }
 
     public function delete(int $id): void
@@ -68,7 +84,11 @@ class TeleporterDataManager extends BaseDataManager
             "economy.teleporter.teleporters.delete",
             [
                 "id" => $id
-            ]);
+            ],
+            null,
+            function (SqlError $error) {
+                Teleporter::getInstance()->getLogger()->error("[SqlError] {$error->getErrorMessage()}");
+            });
         unset($this->data[$id]);
     }
 }

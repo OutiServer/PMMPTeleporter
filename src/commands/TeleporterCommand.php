@@ -4,33 +4,38 @@ declare(strict_types=1);
 
 namespace outiserver\teleporter\commands;
 
-use CortexPE\Commando\BaseCommand;
-use outiserver\teleporter\commands\subcommands\AddSubCommand;
-use outiserver\teleporter\commands\subcommands\RemoveSubCommand;
-use outiserver\teleporter\commands\subcommands\TeleportSubCommand;
+use outiserver\teleporter\forms\TeleporterForm;
+use outiserver\teleporter\language\LanguageManager;
+use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\utils\TextFormat;
+use pocketmine\lang\Translatable;
+use pocketmine\player\Player;
+use pocketmine\plugin\Plugin;
+use pocketmine\plugin\PluginOwned;
 
-class TeleporterCommand extends BaseCommand
+class TeleporterCommand extends Command implements PluginOwned
 {
-    protected function prepare(): void
+    private Plugin $plugin;
+
+    public function __construct(Plugin $plugin, string $name, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("teleporter.command");
-        $this->registerSubCommand(new AddSubCommand("add", "テレポート地点を追加する"));
-        $this->registerSubCommand(new RemoveSubCommand("remove", "テレポート地点を削除する"));
-        $this->registerSubCommand(new TeleportSubCommand("teleport", "テレポーターを起動する", ["tp"]));
+        parent::__construct($name, $description, $usageMessage, $aliases);
+
+        $this->plugin = $plugin;
     }
 
-    public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
+    public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
-        $sender->sendMessage(TextFormat::GREEN . "Teleporter Commands");
-        foreach ($this->getSubCommands() as $subCommand) {
-            if ($subCommand->testPermissionSilent($sender)) {
-                $sender->sendMessage(TextFormat::GREEN . $subCommand->getUsageMessage());
-            }
-            else {
-                $sender->sendMessage(TextFormat::RED . $subCommand->getUsageMessage());
-            }
+        if (!$sender instanceof Player) {
+            $sender->sendMessage(LanguageManager::getInstance()->getLanguage($sender->getLanguage()->getLang())->translateString("command.error.please_used_server"));
+            return;
         }
+
+        (new TeleporterForm())->execute($sender);
+    }
+
+    public function getOwningPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }
